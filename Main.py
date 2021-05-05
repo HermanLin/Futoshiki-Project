@@ -133,11 +133,18 @@ def degreeHeuristic(board, hc, vc, row, col):
             remainingNeighbors += 1
     return remainingNeighbors-2 # remove duplicate count
 
+def isComplete(board):
+    for row in board:
+        for cell in row:
+            if cell == 0:
+                return False
+    return True
+
 def main():
     a, b, c, d = processFile("Input1.txt")
     #print(d)
     forwardCheck(a, d, b, c)
-    #print(d)
+    printDomain(d)
     
     for r in range(6):
         mrv = MRV(a, d, r)
