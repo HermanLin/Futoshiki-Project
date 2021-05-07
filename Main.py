@@ -23,6 +23,16 @@ def processFile(filename):
 
     return initialBoard, horzConstraint, vertConstraint 
 
+def outputFile(filename, outputFileName, board):
+    #copyfile(filename, outputFileName)
+
+    f = open(outputFileName, 'a')
+    for row in board:
+        for cell in row:
+            f.write(str(cell) + " ")
+        f.write("\n")
+    f.close()
+
 def processConstraints(arr):
     resultConstraint = []
     for r in arr:
@@ -38,7 +48,7 @@ def processConstraints(arr):
     return resultConstraint
 
 def main():
-    initial_board, h_constraints, v_constraints = processFile("Input4.txt")
+    initial_board, h_constraints, v_constraints = processFile("Input3.txt")
     problem = CSP(initial_board, h_constraints, v_constraints)
     
     '''
@@ -56,8 +66,10 @@ def main():
     '''
     '''
     BTS = BacktrackingSearch(problem)
+    board = BTS.csp.board
     solution = BTS.backtrack(problem)
     if solution:
+        #outputFile("Input1.txt", "Output1.txt", solution)
         print("=== SOLUTION ===")
         BTS.csp.printBoard()
     else: print("=== NO SOLUTION FOUND ===")
