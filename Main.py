@@ -48,28 +48,18 @@ def processConstraints(arr):
     return resultConstraint
 
 def main():
-    initial_board, h_constraints, v_constraints = processFile("Input2.txt")
+    initial_board, h_constraints, v_constraints = processFile("Input1.txt")
     problem = CSP(initial_board, h_constraints, v_constraints)
-    
-    '''
-    print("\n=======================================")
+
+    print("===== Initial Board =====")
     problem.printBoard()
-    print("\n=======================================")
-    #problem.printDomain()
-    row, col = problem.heuristic()
-    print(row, col)
     
-    result = problem.isConsistent(3, 5)
-    print(result)
-    
-    '''
-    '''
-    '''
     BTS = BacktrackingSearch(problem)
     solution = BTS.backtrack(problem)
+
     if solution:
         #outputFile("Input1.txt", "Output1.txt", solution)
-        print("=== SOLUTION ===")
+        print("======= SOLUTION ========")
         BTS.csp.printBoard()
     else: print("=== NO SOLUTION FOUND ===")
 
