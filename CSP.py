@@ -15,7 +15,7 @@ class CSP:
         self.vc = vc
         
         self.initDomains()
-        #self.initConstraintCheck() # also new code
+        self.initConstraintCheck() # also new code
         self.forwardCheck()
 
     # initialize the domains of the board
@@ -26,7 +26,7 @@ class CSP:
         print("INITIAL DOMAINS===========================")
         self.printDomains()
         print("===============================")
-    '''
+    
     #new code ==================================================================================
     # restrict domains based on inequalities once
     def initConstraintCheck(self):
@@ -44,16 +44,16 @@ class CSP:
                 if row - 1 >= 0: # middle row 1-5
                     if self.vc[row - 1][col] == '^':
                         self.domains[row-1][col] = self.domains[row-1][col][:-1]
-                        self.domains[row][col] = self.domains[row-1][col][1:]
+                        self.domains[row][col] = self.domains[row][col][1:]
                     elif self.vc[row - 1][col] == 'v':
                         self.domains[row-1][col] = self.domains[row-1][col][1:]
-                        self.domains[row][col] = self.domains[row-1][col][:-1]
+                        self.domains[row][col] = self.domains[row][col][:-1]
         print("INITIAL DOMAINS AFTER CONSTRAINT CHECK===========================")
         self.printDomains()
         print("===============================")
     
     #new code ==================================================================================
-    '''
+    
 
     # perform forwardChecking on a board
     def forwardCheck(self):
@@ -67,6 +67,7 @@ class CSP:
                     self.domains[row][col] = [self.board[row][col]]
                     if not self.updateNeighbors(row, col):
                         updateFailed = True
+                        print("UPDATE FAILED")
         return True
 
 
