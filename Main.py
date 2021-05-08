@@ -48,7 +48,7 @@ def processConstraints(arr):
     return resultConstraint
 
 def main():
-    initial_board, h_constraints, v_constraints = processFile("Input3.txt")
+    initial_board, h_constraints, v_constraints = processFile("Input2.txt")
     problem = CSP(initial_board, h_constraints, v_constraints)
     
     '''

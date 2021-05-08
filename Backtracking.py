@@ -42,7 +42,7 @@ class BacktrackingSearch:
                         csp.printDomains()
                         print("===========")
                         
-                        input()
+                        #input()
                         #time.sleep(1)
                     
                         result = self.backtrack(csp)

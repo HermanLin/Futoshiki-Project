@@ -15,6 +15,7 @@ class CSP:
         self.vc = vc
         
         self.initDomains()
+        #self.initConstraintCheck() # also new code
         self.forwardCheck()
 
     # initialize the domains of the board
@@ -25,6 +26,34 @@ class CSP:
         print("INITIAL DOMAINS===========================")
         self.printDomains()
         print("===============================")
+    '''
+    #new code ==================================================================================
+    # restrict domains based on inequalities once
+    def initConstraintCheck(self):
+        for row in range(len(self.board)):
+            for col in range(len(self.board[row])):
+                # horizontal constraint check
+                if col - 1 >= 0: # middle columns 1-5
+                    if self.hc[row][col - 1] == '<':
+                        self.domains[row][col - 1] = self.domains[row][col-1][:-1]
+                        self.domains[row][col] = self.domains[row][col][1:]
+                    elif self.hc[row][col - 1] == '>':
+                        self.domains[row][col - 1] = self.domains[row][col-1][1:]
+                        self.domains[row][col] = self.domains[row][col][:-1]
+                # vertical constraint check
+                if row - 1 >= 0: # middle row 1-5
+                    if self.vc[row - 1][col] == '^':
+                        self.domains[row-1][col] = self.domains[row-1][col][:-1]
+                        self.domains[row][col] = self.domains[row-1][col][1:]
+                    elif self.vc[row - 1][col] == 'v':
+                        self.domains[row-1][col] = self.domains[row-1][col][1:]
+                        self.domains[row][col] = self.domains[row-1][col][:-1]
+        print("INITIAL DOMAINS AFTER CONSTRAINT CHECK===========================")
+        self.printDomains()
+        print("===============================")
+    
+    #new code ==================================================================================
+    '''
 
     # perform forwardChecking on a board
     def forwardCheck(self):
@@ -58,12 +87,12 @@ class CSP:
                 except ValueError: pass
 
         # check constraints for the (row, col)
-        print("check constraint is ", self.checkConstraints(row, col))
-        print("UPDATE DOMAINS===========================")
+        #print("check constraint is ", self.checkConstraints(row, col))
+        print("UPDATE NEIGHBORS===========================")
         self.printDomains()
         print("===============================")
         return self.checkConstraints(row, col)
-
+       
     
     def checkConstraints(self, row, col): # check value is legal with constraints applied\
         #print("    in checkConstraints")
