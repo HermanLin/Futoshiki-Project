@@ -22,10 +22,13 @@ class CSP:
         for i in range(len(self.board)):
             row_domains = [[1,2,3,4,5,6] for j in range(6)]
             self.domains.append(row_domains)
+        print("INITIAL DOMAINS===========================")
+        self.printDomains()
+        print("===============================")
 
     # perform forwardChecking on a board
     def forwardCheck(self):
-        #print("in forwardCheck")
+        print("in forwardCheck")
         updateFailed = False
         for row in range(len(self.board)):
             for col in range(len(self.board[row])):
@@ -39,7 +42,7 @@ class CSP:
 
 
     def updateNeighbors(self, row, col):
-        #print("  in updateNeighbors")
+        print("  in updateNeighbors")
         value = self.board[row][col]
         # update row neighbors
         for i in range(len(self.domains)):
@@ -55,7 +58,10 @@ class CSP:
                 except ValueError: pass
 
         # check constraints for the (row, col)
-        #print("check constraint is ", self.checkConstraints(row, col))
+        print("check constraint is ", self.checkConstraints(row, col))
+        print("UPDATE DOMAINS===========================")
+        self.printDomains()
+        print("===============================")
         return self.checkConstraints(row, col)
 
     
@@ -68,13 +74,13 @@ class CSP:
             if self.hc[row][col - 1] == '<':
                 new_domain = [x for x in self.domains[row][col - 1] if x < value]
                 if not new_domain: 
-                   #print("board pos:",self.domains[row][col - 1] , " 1< value", value)
+                   print("board pos:",self.domains[row][col - 1] , " 1< value", value)
                    return False
                 self.domains[row][col - 1] = new_domain
             elif self.hc[row][col - 1] == '>':
                 new_domain = [x for x in self.domains[row][col - 1] if x > value]
                 if not new_domain: 
-                    #print("board pos:",self.domains[row][col - 1] , "1> value", value)
+                    print("board pos:",self.domains[row][col - 1] , "1> value", value)
                     return False
                 self.domains[row][col - 1] = new_domain
             
@@ -82,13 +88,13 @@ class CSP:
             if self.hc[row][col] == '<':
                 new_domain = [x for x in self.domains[row][col + 1] if x > value]
                 if not new_domain: 
-                    #print("board pos:",self.domains[row][col + 1] , "2> value", value)
+                    print("board pos:",self.domains[row][col + 1] , "2> value", value)
                     return False
                 self.domains[row][col + 1] = new_domain
             elif self.hc[row][col] == '>':
                 new_domain = [x for x in self.domains[row][col + 1] if x < value]
                 if not new_domain: 
-                    #print("board pos:",self.domains[row][col + 1] , "2< value", value)
+                    print("board pos:",self.domains[row][col + 1] , "2< value", value)
                     return False
                 self.domains[row][col + 1] = new_domain
             
@@ -96,13 +102,13 @@ class CSP:
             if self.vc[row - 1][col] == '^':
                 new_domain = [x for x in self.domains[row - 1][col] if x < value]
                 if not new_domain: 
-                    #print("board pos:",self.domains[row -1][col] , "3< value", value)
+                    print("board pos:",self.domains[row -1][col] , "3< value", value)
                     return False
                 self.domains[row - 1][col] = new_domain
             elif self.vc[row - 1][col] == 'v':
                 new_domain = [x for x in self.domains[row - 1][col] if x > value]
                 if not new_domain: 
-                    #print("board pos:", self.domains[row - 1][col] , " 3> value", value)
+                    print("board pos:", self.domains[row - 1][col] , " 3> value", value)
                     return False
                 self.domains[row - 1][col] = new_domain
             
@@ -110,13 +116,13 @@ class CSP:
             if self.vc[row][col] == '^':
                 new_domain = [x for x in self.domains[row + 1][col] if x > value]
                 if not new_domain: 
-                    #print("board pos:", self.domains[row + 1][col] , " 4> value", value)
+                    print("board pos:", self.domains[row + 1][col] , " 4> value", value)
                     return False
                 self.domains[row + 1][col] = new_domain
             elif self.vc[row][col] == 'v':
                 new_domain = [x for x in self.domains[row + 1][col] if x < value]
                 if not new_domain: 
-                    #print("board pos:", self.domains[row + 1][col] , " 4< value", value)
+                    print("board pos:", self.domains[row + 1][col] , " 4< value", value)
                     return False
                 self.domains[row + 1][col] = new_domain
             
@@ -138,6 +144,7 @@ class CSP:
                     min_pos.append((row, col))
                 elif domain_len == minimum:
                     min_pos.append((row, col))
+        print("MRV: min pos: ", min_pos)
         return min_pos
 
     # degrees heuristic
@@ -149,7 +156,7 @@ class CSP:
         # count how many col neighbors are unassigned
         col_neighbors = [self.board[r][col] for r in range(len(self.board))]
         remaining_neighbors += col_neighbors.count(0)
-        #print("{0}: {1}".format((row,col), remaining_neighbors - 2))
+        print("Degreees: {0}: {1}".format((row,col), remaining_neighbors - 2))
         return remaining_neighbors - 2
 
     # heuristic function for choosing next unassigned cell to backtrack
@@ -162,7 +169,7 @@ class CSP:
             degrees.append(self.degrees(row, col))
         
         sorted_min_pos = [x for _, x in sorted(zip(degrees, min_pos))]
-        #print(sorted_min_pos)
+        print("Heuristic: ", sorted_min_pos)
         return sorted_min_pos
         #min_deg = min(degrees)
         #all_mins = [x for x, i in enumerate(degrees) if min_deg == i]
@@ -179,56 +186,56 @@ class CSP:
         column = [self.board[i][col] for i in range(6)]
         if column.count(value) > 1: return False
         
-        #print("allDiff is True")
+        print("allDiff is True")
         return True # all diff!
 
     # check if an assignment satisfies nearby inequalities (if they exist)
     def checkInequal(self, row, col):
         value = self.board[row][col]
 
-        #print("in checkInequal:", (row, col))
+        print("in checkInequal:", (row, col))
         if col - 1 >= 0: # middle columns 1-5
             neighbor_value = self.board[row][col - 1]
             if self.hc[row][col - 1] == '<':
                 if value < neighbor_value and neighbor_value: 
-                    #print(value, "1<", neighbor_value)
+                    print(value, "1<", neighbor_value)
                     return False
             elif self.hc[row][col - 1] == '>':
                 if value > neighbor_value and neighbor_value: 
-                    #print(value, "1>", neighbor_value)
+                    print(value, "1>", neighbor_value)
                     return False
                     
         if col <= 4: # middle columns 0-4
             neighbor_value = self.board[row][col + 1]
             if self.hc[row][col] == '<':
                 if value > neighbor_value and neighbor_value: 
-                    #print(value, "2>", neighbor_value)
+                    print(value, "2>", neighbor_value)
                     return False
             elif self.hc[row][col] == '>':
                 if value < neighbor_value and neighbor_value: 
-                    #print(value, "2<", neighbor_value)
+                    print(value, "2<", neighbor_value)
                     return False
 
         if row - 1 >= 0:
             neighbor_value = self.board[row - 1][col]
             if self.vc[row - 1][col] == '^':
                 if value < neighbor_value and neighbor_value: 
-                    #print(value, "3<", neighbor_value)
+                    print(value, "3<", neighbor_value)
                     return False
             elif self.vc[row - 1][col] == 'v':
                 if value > neighbor_value and neighbor_value: 
-                    #print(value, "3>", neighbor_value)
+                    print(value, "3>", neighbor_value)
                     return False
 
         if row <= 4:
             neighbor_value = self.board[row + 1][col]
             if self.vc[row][col] == '^':
                 if value > neighbor_value and neighbor_value: 
-                    #print(value, "4<", neighbor_value)
+                    print(value, "4<", neighbor_value)
                     return False
             elif self.vc[row][col] == 'v':
                 if value < neighbor_value and neighbor_value: 
-                    #print(value, "4>", neighbor_value)
+                    print(value, "4>", neighbor_value)
                     return False
 
         return True

@@ -26,7 +26,13 @@ class BacktrackingSearch:
 
             for value in domain:
                 # update board with value and check consistency
+                print("VALUE", value)
                 csp.board[row][col] = value
+                print("====ADDED VALUE TO BOARD=============================================")
+                csp.printBoard()
+                print("==================================================")
+                csp.printDomains()
+                print("===================================================")
                 if csp.isConsistent(row, col):
                     # perform forward check
                     if csp.forwardCheck():
@@ -35,7 +41,8 @@ class BacktrackingSearch:
                         print("===========")
                         csp.printDomains()
                         print("===========")
-                        #input()
+                        
+                        input()
                         #time.sleep(1)
                     
                         result = self.backtrack(csp)

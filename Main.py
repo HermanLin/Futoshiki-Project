@@ -66,7 +66,6 @@ def main():
     '''
     '''
     BTS = BacktrackingSearch(problem)
-    board = BTS.csp.board
     solution = BTS.backtrack(problem)
     if solution:
         #outputFile("Input1.txt", "Output1.txt", solution)
