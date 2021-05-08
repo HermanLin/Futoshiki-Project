@@ -1,9 +1,7 @@
 from CSP import CSP
 from Backtracking import BacktrackingSearch
-import copy
 
-def processFile(filename):
-    # read and process an input file for the initial game board and constraints
+def processFile(filename, outputFilename):
     f = open(filename, 'r')
     # read 6 lines and remove trailing newlines for initial game board
     initialBoard = [next(f).rstrip().split(' ') for line in range(6)]
@@ -12,45 +10,13 @@ def processFile(filename):
             initialBoard[i][j] = int(initialBoard[i][j])
     next(f) # skip blank line
     # read 6 lines and remove trailing newlines for horizontal constraints
-    horzConstraint = [next(f).rstrip().split(' ') for line in range(6)]
+    horzConstraints = [next(f).rstrip().split(' ') for line in range(6)]
     next(f) # skip blank line
-    # read 6 lines and remove trailing newlines for ivertical contraints
-    vertConstraint = [next(f).rstrip().split(' ') for line in range(5)]
+    # read 6 lines and remove trailing newlines for vertical contraints
+    vertConstraints = [next(f).rstrip().split(' ') for line in range(5)]
     f.close()
 
-    # process constraints
-    #domains = setDomain(initialBoard)
-
-    return initialBoard, horzConstraint, vertConstraint 
-
-def outputFile(filename, outputFileName, board):
-    #copyfile(filename, outputFileName)
-
-    f = open(outputFileName, 'a')
-    for row in board:
-        for cell in row:
-            f.write(str(cell) + " ")
-        f.write("\n")
-    f.close()
-
-def processConstraints(arr):
-    resultConstraint = []
-    for r in arr:
-        row = r.split(' ')
-        for j in range(len(row)):
-            if row[j] == '<' or row[j] == '^':
-                row[j] = 1
-            elif row[j] == '>' or row[j] == 'v':
-                row[j] = 2
-            else:
-                row[j] = int(row[j]) # convert '0' to int
-        resultConstraint.append(row)
-    return resultConstraint
-
-def main():
-    initial_board, h_constraints, v_constraints = processFile("Input1.txt")
-    problem = CSP(initial_board, h_constraints, v_constraints)
-
+    problem = CSP(initialBoard, horzConstraints, vertConstraints)
     print("===== Initial Board =====")
     problem.printBoard()
     
@@ -58,10 +24,24 @@ def main():
     solution = BTS.backtrack(problem)
 
     if solution:
-        #outputFile("Input1.txt", "Output1.txt", solution)
         print("======= SOLUTION ========")
-        BTS.csp.printBoard()
-    else: print("=== NO SOLUTION FOUND ===")
+        for row in solution: print(row)
+        print()
+    else: print("NO SOLUTION FOUND\n")
+    outputFile(outputFilename, solution)
+
+def outputFile(outputFilename, board):
+    file = open(outputFilename, 'w')
+    for row in board:
+        for cell in row:
+            file.write(str(cell) + " ")
+        file.write("\n")
+    file.close()
+
+def main():
+    processFile("Input1.txt", "Output1.txt")
+    processFile("Input2.txt", "Output2.txt")
+    processFile("Input3.txt", "Output3.txt")
 
 if __name__ == "__main__":
     main()

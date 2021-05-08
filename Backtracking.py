@@ -1,18 +1,15 @@
 from CSP import CSP
 import copy
-import time
 
 class BacktrackingSearch:
 
     def __init__(self, csp):
-        self.csp = csp #board, domains, hc, vc
-        #self.initialAssignment = copy.deepcopy(csp.board)
+        self.csp = csp 
     
     def backtrack(self, csp):
         if csp.isComplete():
             return csp.board
         # select an unassigned variable to update
-        #row, col = csp.heuristic()
         sorted_min_pos = csp.heuristic()
 
         for pos in sorted_min_pos:

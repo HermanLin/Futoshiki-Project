@@ -1,11 +1,5 @@
-'''   
-X = {x_1....x_36} - final variables
-ConstraintDict = { [i][j]: {domain:[], hc:int, vc:int} }
-## D = {d_1....d_36}
-d = [1...6]
-HC = 0 (none), 1 (<), 2 (>)
-VC = 0 (none), 1 (^) , 2 (v)
-'''
+
+
 class CSP:
 
     def __init__(self, board, hc, vc):
@@ -15,7 +9,7 @@ class CSP:
         self.vc = vc
         
         self.initDomains()
-        self.initConstraintCheck() # also new code
+        self.initConstraintCheck()
         self.forwardCheck()
 
     # initialize the domains of the board
